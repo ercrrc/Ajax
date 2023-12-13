@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,55 +8,64 @@
     <title>Meu Github</title>
     <link rel="stylesheet" href="main.css">
 </head>
+
 <body>
     <header>
         <div class="container">
-            <img class="profile-avatar" src="./image/IMG_20191208_191027_027.jpg" alt=".">
-            <h1 class="profile-name">Erivelton Correia</h1>
-            <h2 class="profile-username">Erivelton</h2>
+            <img class="profile-avatar" id="avatar">
+            <h1 class="profile-name" id="name"></h1>
+            <h2 class="profile-username" id="username"></h2>
             <ul class="numbers">
                 <li class="numbers-item">
                     <h4>Repositórios</h4>
-                    <span id="repos">30</span>
+                    <span id="repos"></span>
                 </li>
                 <li class="numbers-item">
                     <h4>Seguidores</h4>
-                    <span id="followers">5</span>
+                    <span id="followers"></span>
                 </li>
                 <li class="numbers-item">
                     <h4>Seguindo</h4>
-                    <span id="foloowing">10</span>
+                    <span id="following"></span>
                 </li>
             </ul>
-            <a href="#" class="profile-link">Ver no Github</a>
+            <a href="#" class="profile-link" id="link" target="_blank">Ver no Github</a>
         </div>
     </header>
 
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const nameElement = document.querySelector('#name');
             const usernameElement = document.querySelector('#username');
             const avatarElement = document.querySelector('#avatar');
             const reposElement = document.querySelector('#repos');
-            const followersElemnt = document.querySelector('#foloowers');
-            const followingElement = document.querySelector('#foloowing');
+            const followersElemnt = document.querySelector('#followers');
+            const followingElement = document.querySelector('#following');
             const linkElement = document.querySelector('#link');
 
-            fetch('https://api.github.com/users/erivelton')
-                .then(function(res) {
-                    return res.json();
-                })
-                .then(function(json) {
-                    nameElement.innerText = json.name;
-                    usernameElement.innerText = json.loguin;
-                    avatarElement.src = json.avatar_url;
-                    followingElement.innerText = json.following;
-                    followersElemnt.innerText = json.followers;
-                    repos.innerText = json.public_repos;
-                    linkElement.href = json.html_url;
-                })
+            try {
+                const apiUrl = "https://api.github.com/users/ercrrc";
+
+                const xhr = new XMLHttpRequest();
+                xhr.open("GET", apiUrl, true);
+                xhr.onload = function () {
+                    const response = JSON.parse(xhr.responseText);
+
+                    nameElement.innerText = response.name;
+                    usernameElement.innerText = response.login;
+                    avatarElement.src = response.avatar_url;
+                    followingElement.innerText = response.following;
+                    followersElemnt.innerText = response.followers;
+                    repos.innerText = response.public_repos;
+                    linkElement.href = response.html_url;
+                };
+                xhr.send();
+            } catch (error) {
+                console.error("Erro ao recuperar informações do Github:", error);
+            }
         })
     </script>
 </body>
+
 </html>
